@@ -28,6 +28,7 @@ public final class RomanConverter {
 		{"s", "さ", "し", "す", "せ", "そ"},
 		{"sh", "しゃ", "し", "しゅ", "しぇ", "しょ"},
 		{"t", "た", "ち", "つ", "て", "と"},
+		{"th", "てゃ", "てぃ", "てゅ", "てぇ", "てょ"},
 		{"v", "ゔぁ", "ゔぃ", "ゔ", "ゔぇ", "ゔぉ"},
 		{"w", "わ", "ゐ", "う", "ゑ", "を"},
 		{"x", "ぁ", "ぃ", "ぅ", "ぇ", "ぉ"},
@@ -49,21 +50,13 @@ public final class RomanConverter {
 		}
 	}
 
-
-
-	private int getIndex(char vowel) {
-		return vowel == 'a' ? 0 : vowel == 'i' ? 1 : vowel == 'u' ? 2
-				: vowel == 'e' ? 3 : 4;
-	}
-
-
 	private String choice(String consonant, char vowel) {
 		StringBuilder buff = new StringBuilder();
-		char first = consonant.charAt(0);
 		String[] row = this.consonantMap.get(consonant);
 
 		if (row == null && 1 < consonant.length()) {
 			String key = consonant.substring(1);
+			char first = consonant.charAt(0);
 			char second = key.charAt(0);
 
 			if (first == 'm' || first == 'n') {
@@ -74,7 +67,9 @@ public final class RomanConverter {
 			row = this.consonantMap.get(key);
 		}
 		if (row != null) {
-			buff.append(row[getIndex(vowel)]);
+			int index = vowel == 'a' ? 0 : vowel == 'i' ? 1 : vowel == 'u' ? 2
+					: vowel == 'e' ? 3 : 4;
+			buff.append(row[index]);
 		}
 		return buff.toString();
 	}
@@ -154,5 +149,6 @@ public final class RomanConverter {
 		System.out.println(conv.convert("hampanasemmonchisiki"));
 		System.out.println(conv.convert("furoppi-dhisukudoraivu"));
 		System.out.println(conv.convert("konzai混在sorelwanailwa"));
+		System.out.println(conv.convert("oputhime-ta-"));
 	}
 }
