@@ -10,8 +10,8 @@ public final class RomanConverter {
 		{"b", "ば", "び", "ぶ", "べ", "ぼ"},
 		{"c", "か", "し", "く", "せ", "こ"},
 		{"ch", "ちゃ", "ち", "ちゅ", "ちぇ", "ちょ"},
+		{"cy", "ちゃ", "ち", "ちゅ", "ちぇ", "ちょ"},
 		{"d", "だ", "ぢ", "づ", "で", "ど"},
-		{"dh", "でゃ", "でぃ", "でゅ", "でぇ", "でょ"},
 		{"f", "ふぁ", "ふぃ", "ふ", "ふぇ", "ふぉ"},
 		{"g", "が", "ぎ", "ぐ", "げ", "ご"},
 		{"h", "は", "ひ", "ふ", "へ", "ほ"},
@@ -28,7 +28,6 @@ public final class RomanConverter {
 		{"s", "さ", "し", "す", "せ", "そ"},
 		{"sh", "しゃ", "し", "しゅ", "しぇ", "しょ"},
 		{"t", "た", "ち", "つ", "て", "と"},
-		{"th", "てゃ", "てぃ", "てゅ", "てぇ", "てょ"},
 		{"v", "ゔぁ", "ゔぃ", "ゔ", "ゔぇ", "ゔぉ"},
 		{"w", "わ", "ゐ", "う", "ゑ", "を"},
 		{"x", "ぁ", "ぃ", "ぅ", "ぇ", "ぉ"},
@@ -75,9 +74,6 @@ public final class RomanConverter {
 	}
 
 	private String choice(String candidate) {
-		if (!candidate.matches("[a-z\\-]+")) {
-			return candidate;
-		}
 		StringBuilder buff = new StringBuilder();
 		int splitPos = candidate.length() - 1;
 		String consonant = candidate.substring(0, splitPos);
@@ -86,17 +82,16 @@ public final class RomanConverter {
 
 		if (consonantLen == 0) {
 			// only vowel
-			if (vowel == '-') {
-				buff.append('ー');
-			} else if (vowel == 'n') {
-				buff.append('ん');
-			} else {
-				buff.append(choice("a", vowel));
-			}
+			buff.append(choice("a", vowel));
 		} else if (1 < consonantLen && consonant.endsWith("y")) {
 			// 拗音
 			String first = String.valueOf(consonant.charAt(0));
 			buff.append(choice(first, 'i'));
+			buff.append(choice("ly", vowel));
+		} else if ("dh".equals(consonant) || "th".equals(consonant)) {
+			// でぃてぃ
+			String first = String.valueOf(consonant.charAt(0));
+			buff.append(choice(first, 'e'));
 			buff.append(choice("ly", vowel));
 		} else {
 			buff.append(choice(consonant, vowel));
@@ -127,10 +122,23 @@ public final class RomanConverter {
 		StringBuilder buff = new StringBuilder();
 
 		for (String candidate : chop(roman)) {
-			String letter = choice(candidate);
-			if (letter != null) {
-				buff.append(letter);
+			if (!candidate.matches("[a-z-]+")) {
+				buff.append(candidate);
+				continue;
 			}
+			if ("n".equals(candidate)) {
+				buff.append('ん');
+				continue;
+			}
+			if ("-".equals(candidate)) {
+				buff.append('ー');
+				continue;
+			}
+			if (candidate.length() == 1 && !candidate.matches("[aiueo]")) {
+				// The middle of the input.
+				continue;
+			}
+			buff.append(choice(candidate));
 		}
 		return buff.toString();
 	}
@@ -140,15 +148,20 @@ public final class RomanConverter {
 	}
 
 	public static void main(String[] args) {
+		String[] testcase = {
+			"nyankofunjattad",
+			"sammaippaitottorisakyuu",
+			"hambaiinkaraiewokaushin'you",
+			"kin'yuusyoruikinyuu",
+			"hampanasemmonchisiki",
+			"furoppi-dhisukudoraivu",
+			"konzai混在soryaxanailwa",
+			"shupa-ten oputhime-ta-",
+		};
 		RomanConverter conv = RomanConverter.getInstance();
 
-		System.out.println(conv.convert("nyankofunjatta"));
-		System.out.println(conv.convert("sammaippaitottorisakyuu"));
-		System.out.println(conv.convert("hambaiinkaraiewokaushin'you"));
-		System.out.println(conv.convert("kin'yuusyoruikinyuu"));
-		System.out.println(conv.convert("hampanasemmonchisiki"));
-		System.out.println(conv.convert("furoppi-dhisukudoraivu"));
-		System.out.println(conv.convert("konzai混在sorelwanailwa"));
-		System.out.println(conv.convert("oputhime-ta-"));
+		for (String str : testcase) {
+			System.out.println(conv.convert(str));
+		}
 	}
 }
