@@ -4,6 +4,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * ローマ字変換.
+ * @author H.Sasai
+ */
 public final class RomanConverter {
 	private static final String[][] CONSONANT_LIST = {
 		{"a", "あ", "い", "う", "え", "お"},
@@ -101,23 +105,33 @@ public final class RomanConverter {
 
 	private String[] chop(String roman) {
 		StringBuilder buff = new StringBuilder();
+		char last = 0;
 		boolean isLastTarget = true;
 
 		for (char ch : roman.toLowerCase().toCharArray()) {
 			boolean isTarget = 'a' <= ch && ch <= 'z' || ch == '-';
-			if (isTarget && !isLastTarget) {
-				buff.append(" ");
+			boolean isVowel = ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+
+			if (isTarget && !isLastTarget || last == 'm' && !isVowel) {
+				buff.append(' ');
 			}
 			buff.append(ch);
-			if (ch == 'a' || ch == 'i' || ch == 'u' || ch == 'e' || ch == 'o'
-					|| ch == '-') {
-				buff.append(" ");
+			if (isVowel || ch == '-' || ch == 'n' && last == 'n') {
+				buff.append(' ');
+				last = 0;
+			} else {
+				last = ch;
 			}
 			isLastTarget = isTarget;
 		}
-		return buff.toString().split("[\\s']");
+		return buff.toString().split("[\\s']+");
 	}
 
+	/**
+	 * Convert.
+	 * @param roman Roman string
+	 * @return Hiragana
+	 */
 	public String convert(String roman) {
 		StringBuilder buff = new StringBuilder();
 
@@ -126,7 +140,7 @@ public final class RomanConverter {
 				buff.append(candidate);
 				continue;
 			}
-			if ("n".equals(candidate)) {
+			if ("m".equals(candidate) || "n".equals(candidate) || "nn".equals(candidate)) {
 				buff.append('ん');
 				continue;
 			}
