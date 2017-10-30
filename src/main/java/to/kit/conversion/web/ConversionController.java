@@ -1,4 +1,4 @@
-package to.kit.conversion.controller;
+package to.kit.conversion.web;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import to.kit.conversion.RomanConverter;
-import to.kit.conversion.data.ConversionResponse;
-import to.kit.conversion.form.ConversionForm;
+import to.kit.conversion.form.request.ConversionForm;
+import to.kit.conversion.form.response.ConversionResponse;
+import to.kit.util.RomanConverter;
 
 /**
  * 変換コントローラー.
@@ -40,7 +40,7 @@ public final class ConversionController {
 		RomanConverter conv = RomanConverter.getInstance();
 		String kana = conv.convert(roman);
 
-		response.setResult("OK");
+		response.setResult(true);
 		response.setKana(kana);
 		return response;
 	}

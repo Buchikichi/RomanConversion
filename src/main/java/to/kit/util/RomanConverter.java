@@ -1,4 +1,4 @@
-package to.kit.conversion;
+package to.kit.util;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -71,8 +71,10 @@ public final class RomanConverter {
 		}
 		if (row != null) {
 			int index = vowel == 'a' ? 0 : vowel == 'i' ? 1 : vowel == 'u' ? 2
-					: vowel == 'e' ? 3 : 4;
-			buff.append(row[index]);
+					: vowel == 'e' ? 3 : vowel == 'o' ? 4 : -1;
+			if (index != -1) {
+				buff.append(row[index]);
+			}
 		}
 		return buff.toString();
 	}
@@ -111,8 +113,9 @@ public final class RomanConverter {
 		for (char ch : roman.toLowerCase().toCharArray()) {
 			boolean isTarget = 'a' <= ch && ch <= 'z' || ch == '-';
 			boolean isVowel = ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+			boolean isN = !isVowel && (last == 'm' || last == 'n' && ch != last && ch != 'y');
 
-			if (isTarget && !isLastTarget || last == 'm' && !isVowel) {
+			if (isTarget && !isLastTarget || isN) {
 				buff.append(' ');
 			}
 			buff.append(ch);
