@@ -16,7 +16,13 @@
       <h1>RomanConversion</h1>
     </div>
     <div data-role="content">
-      <input id="roman" type="text"/>
+      <label>Source:<input id="roman" type="text"/></label>
+      <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+        <legend>Conversion:</legend>
+        <label><input type="radio" name="conversion" value="halfKana"/>Half kana</label>
+        <label><input type="radio" name="conversion" value="katakana"/>Katakana</label>
+        <label><input type="radio" name="conversion" value="hiragana"/>Hiragana</label>
+      </fieldset>
       <input id="kana" type="text" readonly="readonly"/>
     </div>
   </div>

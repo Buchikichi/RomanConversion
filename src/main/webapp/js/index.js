@@ -10,7 +10,10 @@ class AppMain {
 
 	convert() {
 		var val = this.roman.val();
-		var data = {roman: val};
+		var data = {
+				roman: val,
+				conversion: $('[name=conversion]').val(),
+		};
 
 		$.ajax({
 			type: 'post',

@@ -1,5 +1,6 @@
 package to.kit.conversion.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import to.kit.conversion.form.request.ConversionForm;
 import to.kit.conversion.form.response.ConversionResponse;
-import to.kit.util.RomanConverter;
+import to.kit.conversion.service.RomanConversionService;
 
 /**
  * 変換コントローラー.
@@ -17,6 +18,9 @@ import to.kit.util.RomanConverter;
 @Controller
 @EnableAutoConfiguration
 public final class ConversionController {
+	@Autowired
+	private RomanConversionService romanConversionService;
+
 	/**
 	 * Hello.
 	 * @return hello
@@ -37,8 +41,7 @@ public final class ConversionController {
 	public ConversionResponse convert(@ModelAttribute ConversionForm form) {
 		String roman = form.getRoman();
 		ConversionResponse response = new ConversionResponse();
-		RomanConverter conv = RomanConverter.getInstance();
-		String kana = conv.convert(roman);
+		String kana = this.romanConversionService.convert(roman, form.getConversion());
 
 		response.setResult(true);
 		response.setKana(kana);
