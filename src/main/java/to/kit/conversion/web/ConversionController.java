@@ -3,7 +3,7 @@ package to.kit.conversion.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -38,10 +38,10 @@ public final class ConversionController {
 	 */
 	@RequestMapping("/convert")
 	@ResponseBody
-	public ConversionResponse convert(@ModelAttribute ConversionForm form) {
+	public ConversionResponse convert(@RequestBody ConversionForm form) {
 		String roman = form.getRoman();
 		ConversionResponse response = new ConversionResponse();
-		String kana = this.romanConversionService.convert(roman, form.getConversion());
+		String kana = this.romanConversionService.convert(roman, form.getConversionTypes());
 
 		response.setResult(true);
 		response.setKana(kana);

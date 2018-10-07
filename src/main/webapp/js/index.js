@@ -4,22 +4,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
 class AppMain {
 	constructor() {
-		this.roman = $('#roman');
-		this.roman.keyup(()=>{this.convert()});
+		this.roman = $('[name=roman]');
+		this.roman.keyup(()=>this.convert());
+		$('[name=conversion]').change(()=>this.convert());
 	}
 
 	convert() {
-		var val = this.roman.val();
+		var type = $('[name=conversion]:checked').val();
 		var data = {
-				roman: val,
-				conversion: $('[name=conversion]').val(),
+			roman: this.roman.val(),
+			conversionTypes: ['RomanConversion', type],
 		};
 
 		$.ajax({
 			type: 'post',
 			url: 'convert',
+			headers: {'Content-Type':'application/json'},
 			dataType: 'json',
-			data: data,
+			data: JSON.stringify(data),
 		}).then((data)=>{
 //			console.log('then');
 //			console.log(data);
@@ -28,6 +30,6 @@ class AppMain {
 	}
 
 	setResult(kana) {
-		$('#kana').val(kana);
+		$('[name=result]').val(kana);
 	}
 }

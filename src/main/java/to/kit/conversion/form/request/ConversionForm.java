@@ -1,12 +1,14 @@
 package to.kit.conversion.form.request;
 
+import to.kit.conversion.enumeration.ConversionType;
+
 /**
  * フォーム.
  * @author H.Sasai
  */
 public final class ConversionForm {
 	private String roman;
-	private String conversion;
+	private ConversionType[] conversionTypes;
 
 	/**
 	 * @return the roman
@@ -23,13 +25,13 @@ public final class ConversionForm {
 	/**
 	 * @return the conversion
 	 */
-	public String getConversion() {
-		return this.conversion;
+	public ConversionType[] getConversionTypes() {
+		return this.conversionTypes;
 	}
 	/**
-	 * @param conversion the conversion to set
+	 * @param value the conversion to set
 	 */
-	public void setConversion(String conversion) {
-		this.conversion = conversion;
+	public void setConversionTypes(ConversionType[] value) {
+		this.conversionTypes = value;
 	}
 }

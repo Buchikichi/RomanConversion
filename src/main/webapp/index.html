@@ -16,14 +16,14 @@
       <h1>RomanConversion</h1>
     </div>
     <div data-role="content">
-      <label>Source:<input id="roman" type="text"/></label>
+      <label>Source:<textarea name="roman"></textarea></label>
       <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
         <legend>Conversion:</legend>
-        <label><input type="radio" name="conversion" value="halfKana"/>Half kana</label>
-        <label><input type="radio" name="conversion" value="katakana"/>Katakana</label>
-        <label><input type="radio" name="conversion" value="hiragana"/>Hiragana</label>
+        <label><input type="radio" name="conversion" value="HalfKana" checked="checked"/>Half kana</label>
+        <label><input type="radio" name="conversion" value="Katakana"/>Katakana</label>
+        <label><input type="radio" name="conversion" value="Hiragana"/>Hiragana</label>
       </fieldset>
-      <input id="kana" type="text" readonly="readonly"/>
+      <textarea name="result" readonly="readonly"></textarea>
     </div>
   </div>
 </body>
